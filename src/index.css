@@ -1,0 +1,203 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ───────────────────────── Base ───────────────────────── */
+@layer base {
+  :root {
+    --taquara: #2f5d3a;
+    --terracota: #c9622f;
+    --folha: #8bb653;
+    --argila: #e0893f;
+    --creme: #f7f3e8;
+    --carvao: #16211a;
+    --ease-magnetic: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-creme font-sans text-carvao;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--folha);
+    color: var(--carvao);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--terracota);
+    outline-offset: 3px;
+    border-radius: 9999px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading font-bold;
+    letter-spacing: -0.03em;
+  }
+
+  img {
+    -webkit-user-drag: none;
+  }
+}
+
+/* ─────────────────────── Componentes ─────────────────────── */
+@layer components {
+  /* Contêiner padrão: deixa espaço para o bambu fixo na esquerda */
+  .shell {
+    @apply mx-auto w-full max-w-7xl pl-9 pr-5 md:pl-28 md:pr-10 xl:pl-32;
+  }
+
+  .eyebrow {
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.22em];
+  }
+
+  .estimate {
+    @apply font-mono text-[10px] font-normal normal-case tracking-normal opacity-70;
+  }
+
+  /* Botão magnético */
+  .btn-magnetic {
+    @apply relative inline-flex select-none items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3.5 font-heading text-[15px] font-semibold tracking-[-0.01em];
+    transition: transform 0.35s var(--ease-magnetic), box-shadow 0.35s var(--ease-magnetic), color 0.35s var(--ease-magnetic);
+    isolation: isolate;
+  }
+  .btn-magnetic:hover {
+    transform: scale(1.03);
+  }
+  .btn-magnetic:active {
+    transform: scale(0.98);
+  }
+  .btn-magnetic > .btn-fill {
+    @apply absolute inset-0 -z-10 rounded-full;
+    transform: translateY(101%);
+    transition: transform 0.45s var(--ease-magnetic);
+  }
+  .btn-magnetic:hover > .btn-fill,
+  .btn-magnetic:focus-visible > .btn-fill {
+    transform: translateY(0);
+  }
+
+  /* Cartão-instrumento */
+  .instrument {
+    @apply rounded-4xl border border-carvao/10 bg-creme shadow-card;
+  }
+}
+
+/* ─────────────────────── Utilitários ─────────────────────── */
+@layer utilities {
+  .lift {
+    transition: transform 0.25s var(--ease-magnetic), color 0.25s var(--ease-magnetic), opacity 0.25s;
+  }
+  .lift:hover {
+    transform: translateY(-1px);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .ease-spring-css {
+    transition-timing-function: var(--ease-spring);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Ruído global (feTurbulence inline no App) */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.05;
+}
+
+/* Fallback de imagem: degradê da paleta */
+.img-fallback {
+  background:
+    radial-gradient(120% 90% at 20% 10%, rgba(139, 182, 83, 0.55), transparent 55%),
+    radial-gradient(90% 80% at 90% 90%, rgba(201, 98, 47, 0.45), transparent 60%),
+    linear-gradient(160deg, #2f5d3a 0%, #16211a 100%);
+}
+
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Cursor piscando do typewriter */
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.caret {
+  animation: blink 1s steps(1) infinite;
+}
+
+/* Ponto pulsante */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+.pulse-dot {
+  position: relative;
+}
+.pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: pulse-ring 1.6s var(--ease-magnetic) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .caret {
+    animation: none;
+  }
+}
